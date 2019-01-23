@@ -1,5 +1,7 @@
 ## Reflection.Emit
 
+原文地址：http://www.abhisheksur.com/2010/10/dlr-using-reflectionemit-in-depth-part.html
+
 ## 生成 Assembly
 
 - 用 AssemblyBuilder 生成一个 Assembly
