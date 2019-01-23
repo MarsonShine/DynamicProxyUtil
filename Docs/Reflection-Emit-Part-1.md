@@ -93,7 +93,7 @@ public class Builder {
 
 其他的方法是 Program.Main 中的代码，这里不说。
 
-![1548232863(images/1548232863(1).jpg)
+![reflection-emit-whole](images/reflection-emit-whole.jpg)
 
 从这个图可以清楚的看出 CLR 程序集整个结构是如何工作的。（注意，此图为 ASP.NET 下的 CLR 结构图，与 .NET Core 有区别）Application Domain 是创建 Assembly、Module、Type 的根，而 Delegate 也是一个类，它继承自 System.MultiCastDelegate 并且结构是继承自 System.ValueTypes。每个类型都维护自己的成员信息，每个成员方法或属性有自己的操作码（Opcodes），Locals（本地变量） 以及 参数（Parameters）。你可以用Locals 在方法体类定义局部变量，操作码是 IL 的指令码。
 
