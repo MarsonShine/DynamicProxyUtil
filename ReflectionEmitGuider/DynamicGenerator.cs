@@ -25,9 +25,9 @@ namespace ReflectionEmitGuider
             return moduleBuilder;
         }
 
-        public TypeBuilder GetType(ModuleBuilder moduleBuilder, string className)
+        public TypeBuilder GetTypeBuilder(ModuleBuilder moduleBuilder, string className)
         {
-            TypeBuilder typeBuilder = moduleBuilder.DefineType(className, TypeAttributes.Public);
+            TypeBuilder typeBuilder = moduleBuilder.DefineType(TypeName + "_" + className, TypeAttributes.Public);
             return typeBuilder;
         }
 
@@ -54,7 +54,7 @@ namespace ReflectionEmitGuider
             return methodBuilder;
         }
 
-        private TypeBuilder GetType(ModuleBuilder moduleBuilder, string className, params string[] genericParameters)
+        private TypeBuilder GetTypeBuilder(ModuleBuilder moduleBuilder, string className, params string[] genericParameters)
         {
             TypeBuilder builder = moduleBuilder.DefineType(className, TypeAttributes.Public);
             var genericParametersBuilder = builder.DefineGenericParameters(genericParameters);

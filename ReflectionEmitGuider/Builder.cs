@@ -1,13 +1,16 @@
 using System;
 
-namespace ReflectionEmitGuider {
-    public class Builder {
+namespace ReflectionEmitGuider
+{
+    public class Builder : IBuilder
+    {
         #region Event
         public delegate void BuilderDelegate(string message);
 
         public event BuilderDelegate InvokeMessage;
 
-        public virtual void OnInvokeMessage(string message) {
+        public virtual void OnInvokeMessage(string message)
+        {
             if (this.InvokeMessage != null)
                 this.InvokeMessage(message);
         }
@@ -15,12 +18,14 @@ namespace ReflectionEmitGuider {
 
         #region Fields
         private int firstNum, secondNum;
-        public int FirstNum {
+        public int FirstNum
+        {
             get { return this.firstNum; }
             set { this.firstNum = value; }
         }
 
-        public int SecondNum {
+        public int SecondNum
+        {
             get { return this.secondNum; }
             set { this.secondNum = value; }
         }
@@ -28,7 +33,13 @@ namespace ReflectionEmitGuider {
         #endregion
 
         #region Constructors
-        public Builder(int firstnum, int secondnum) {
+        public Builder()
+        {
+            this.FirstNum = 0;
+            this.SecondNum = 0;
+        }
+        public Builder(int firstnum, int secondnum)
+        {
             this.FirstNum = firstnum;
             this.SecondNum = secondnum;
         }
@@ -36,22 +47,29 @@ namespace ReflectionEmitGuider {
 
         #region IBuilder Members
 
-        public float Sum(int firstnum, int secondnum) {
+        public float Sum(int firstnum, int secondnum)
+        {
             return firstnum + secondnum;
         }
 
-        public float Substract(int firstnum, int secondnum) {
+        public float Substract(int firstnum, int secondnum)
+        {
             return firstnum - secondnum;
         }
 
-        public float Multiply(int firstnum, int secondnum) {
+        public float Multiply(int firstnum, int secondnum)
+        {
             return firstnum * secondnum;
         }
 
-        public float Divide(int firstnum, int secondnum) {
-            try {
+        public float Divide(int firstnum, int secondnum)
+        {
+            try
+            {
                 return firstnum / secondnum;
-            } catch (DivideByZeroException ex) {
+            }
+            catch (DivideByZeroException ex)
+            {
                 Console.WriteLine("ZeroDivide exception : {0}", ex.Message);
                 return 0;
             }
@@ -61,10 +79,12 @@ namespace ReflectionEmitGuider {
 
         #region Methods
 
-        public float GetProduct() {
+        public float GetProduct()
+        {
             return this.Multiply(this.FirstNum, this.secondNum);
         }
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("FirstNum : {0}, SecondNum : {1}", this.FirstNum, this.SecondNum);
         }
 
