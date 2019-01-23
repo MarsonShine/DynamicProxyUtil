@@ -11,6 +11,7 @@ namespace ReflectionEmitGuider
         private const string AssemblyName = "ReflectionEmitGuider.DynamicAssembly";
         private const string ModuleName = "ReflectionEmitGuider.DynamicModule";
         private const string TypeName = "ReflectionEmitGuider.DynamicType";
+        private readonly MethodAttributes MethodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig;
         public AssemblyBuilder GetAssemblyBuilder()
         {
             var assemblyName = new AssemblyName(AssemblyName);
@@ -30,7 +31,31 @@ namespace ReflectionEmitGuider
             return typeBuilder;
         }
 
-        private TypeBuilder GetType(ModuleBuilder moduleBuilder, string className, params string[] genericParameters) {
+        public MethodBuilder GetMethod(TypeBuilder typeBuilder, string methodName)
+        {
+            MethodBuilder methodBuilder = typeBuilder.DefineMethod(methodName, MethodAttributes);
+            return methodBuilder;
+        }
+
+        public MethodBuilder GetMethod(TypeBuilder typBuilder, string methodName, Type returnType, params Type[] parameterTypes)
+        {
+            MethodBuilder builder = typBuilder.DefineMethod(methodName, MethodAttributes, CallingConventions.HasThis, returnType, parameterTypes);
+            return builder;
+        }
+
+        public MethodBuilder GetMethod(TypeBuilder typeBuilder, string methodName, Type returnType, string[] genericParameters, params Type[] parameterTypes)
+        {
+            var methodBuilder = typeBuilder.DefineMethod(methodName, MethodAttributes, CallingConventions.HasThis, returnType, parameterTypes);
+            var genBuilders = methodBuilder.DefineGenericParameters(genericParameters);
+            foreach (var genBuilder in genBuilders)
+            {
+                genBuilder.SetGenericParameterAttributes(GenericParameterAttributes.ReferenceTypeConstraint | GenericParameterAttributes.DefaultConstructorConstraint);
+            }
+            return methodBuilder;
+        }
+
+        private TypeBuilder GetType(ModuleBuilder moduleBuilder, string className, params string[] genericParameters)
+        {
             TypeBuilder builder = moduleBuilder.DefineType(className, TypeAttributes.Public);
             var genericParametersBuilder = builder.DefineGenericParameters(genericParameters);
             foreach (var genBuilder in genericParametersBuilder)

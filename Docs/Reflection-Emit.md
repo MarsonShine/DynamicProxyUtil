@@ -150,7 +150,66 @@ private TypeBuilder GetType(ModuleBuilder moduleBuilder, string className, param
 
 这里有两个重载，第一个很简单，就是制定一个类名生成 TypeBuilder 返回即可。
 
-第二个重载添加了一个额外的字符串参数数组，它定义了类的每个泛型类型。GenericTypeParameterBuilder 定义 GenericTypeParameter。定义并设置 GenericTypeParameters 的约束属性之后，你就可以生成它了。
+第二个重载添加了一个额外的字符串参数数组，它定义了类的每个泛型类型。GenericTypeParameterBuilder 允许你定义 GenericTypeParameter。定义并设置 GenericTypeParameters 的约束属性之后，你就可以生成它了。
 
 ### 4：创建方法
 
+方法是任何程序都要构建的部分。我们将定义一些方法来清楚的告诉你从 IL 构建方法是很容易的。先让我们来创建一个 MethodBuilder。
+
+```c#
+public MethodBuilder GetMethod(TypeBuilder typeBuilder, string methodName)
+{
+    MethodBuilder methodBuilder = typeBuilder.DefineMethod(methodName, MethodAttributes);
+    return methodBuilder;
+}
+
+public MethodBuilder GetMethod(TypeBuilder typBuilder, string methodName, Type returnType, params Type[] parameterTypes)
+{
+    MethodBuilder builder = typBuilder.DefineMethod(methodName, MethodAttributes, CallingConventions.HasThis, returnType, parameterTypes);
+    return builder;
+}
+
+public MethodBuilder GetMethod(TypeBuilder typeBuilder, string methodName, Type returnType, string[] genericParameters, params Type[] parameterTypes)
+{
+    var methodBuilder = typeBuilder.DefineMethod(methodName, MethodAttributes, CallingConventions.HasThis, returnType, parameterTypes);
+    var genBuilders = methodBuilder.DefineGenericParameters(genericParameters);
+    foreach (var genBuilder in genBuilders)
+    {
+        //枚举是获取泛型类或泛型方法上的泛型参数的约束内容
+        genBuilder.SetGenericParameterAttributes(GenericParameterAttributes.ReferenceTypeConstraint | GenericParameterAttributes.DefaultConstructorConstraint);
+    }
+    return methodBuilder;
+}
+```
+
+上面的方法将会返回给你 MethodBuilder，它允许你定义 IL 代码。你可以看到，我为此写了三个重载 。这些重载允许你传惨，也可以传泛型参数给方法。
+
+现在就需要开始写本地变量（局部变量）以及使用 Opcodes 指令了。
+
+### 5：IL 生成器
+
+要定 IL 的 Opcodes 是需要 ILGenerator。ILGenerator 允许你为方法体使用 Emit 编写 IL，因此可以创建完全相同的方法。
+
+```c#
+private static void CreateMethod()
+{
+    DynamicGenerator proxy = new DynamicGenerator();
+    var assembly = proxy.GetAssemblyBuilder();
+    var module = proxy.GetModuleBuilder(assembly);
+    var typeBuilder = proxy.GetType(module, "DynamicProxyClass");
+    Type[] tparams = { typeof(int), typeof(int) };
+    MethodBuilder methodSum = proxy.GetMethod(typeBuilder, "Sum", typeof(float), tparams);
+    ILGenerator generator = methodSum.GetILGenerator();
+    generator.Emit(OpCodes.Ldarg_0);
+    generator.Emit(OpCodes.Ldarg_1);
+    generator.Emit(OpCodes.Add_Ovf);
+    generator.Emit(OpCodes.Stloc_0);
+    generator.Emit(OpCodes.Br_S);
+    generator.Emit(OpCodes.Ldloc_0);
+    generator.Emit(OpCodes.Ret);
+}
+```
+
+最后，我尝试用 IL 生成 Sum 方法让两个数字相加，并生成类。你可以用这个类通过反射来调用成员信息。你将会变得更清楚。
+
+随着话题变得越来越有趣，越来越复杂，我把文章拆封了两部分。这篇文章就到此结束，下节，我将用 IL 生成事件，委托，方法等等。
