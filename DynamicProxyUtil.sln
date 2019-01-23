@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicProxyUtil", "DynamicProxyUtil\DynamicProxyUtil.csproj", "{7722D99A-FBC7-47F2-A01D-1E48548A7E52}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{BE0F30D9-C41A-41E5-8A0A-FC8626470C78}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Reflection-Emit.md = Docs\Reflection-Emit.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflectionEmitGuider", "ReflectionEmitGuider\ReflectionEmitGuider.csproj", "{428694C9-0F2F-472F-A952-BBF10F41F3B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7722D99A-FBC7-47F2-A01D-1E48548A7E52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7722D99A-FBC7-47F2-A01D-1E48548A7E52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7722D99A-FBC7-47F2-A01D-1E48548A7E52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7722D99A-FBC7-47F2-A01D-1E48548A7E52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{428694C9-0F2F-472F-A952-BBF10F41F3B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{428694C9-0F2F-472F-A952-BBF10F41F3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{428694C9-0F2F-472F-A952-BBF10F41F3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{428694C9-0F2F-472F-A952-BBF10F41F3B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF0B5DEF-9D85-427E-A1F2-D9A120889D15}
+	EndGlobalSection
+EndGlobal
